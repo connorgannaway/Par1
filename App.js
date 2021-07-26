@@ -1,26 +1,30 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Header from './components/header'
+import { StatusBar } from 'expo-status-bar';
+import React, {useState} from 'react';
+import HoleStack from './routes/HoleStack'
+import AppLoading from 'expo-app-loading';
+import * as Font from 'expo-font';
+
+const getFonts = () => Font.loadAsync({
+  'nunito-regular': require('./assets/fonts/Nunito-Regular.ttf'),
+  'nunito-bold': require('./assets/fonts/Nunito-Bold.ttf'),
+  'nunito-light': require('./assets/fonts/Nunito-Light.ttf'),
+})
+
 
 export default function App() {
-  return (
-    <View>
-      <Header />
-      <View style={styles.container}>
-        <Text style={styles.boldText}>Test update</Text>
-      </View>
-    </View>
-    
-    );
-}
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  boldText: {
-    fontWeight: 'bold'
-  },
-});
+  if(fontsLoaded){
+    return(
+      <HoleStack />
+    );
+  } else {
+    return(
+      <AppLoading 
+        startAsync={getFonts}
+        onFinish={()=> setFontsLoaded(true)}
+        onError={console.warn}
+      />
+    )
+  }
+}
