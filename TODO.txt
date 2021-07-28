@@ -23,6 +23,8 @@ notes for amadeus:
   or on the settings screen could be overwhelming or confusing in regards to navigating
   the app.
 - I think distinction between front nine and back nine can be good.
+- Maybe the only time you visit settings is at the beginning of a game. Visiting again prompts
+  the creation of a new game.
 
 ideal total feature list:
 - score tracking for unlimited number of players

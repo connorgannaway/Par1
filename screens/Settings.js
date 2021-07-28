@@ -3,12 +3,40 @@ import { StyleSheet, View, Text, TextInput, TouchableWithoutFeedback, Keyboard, 
 import { globalStyles } from '../styles/global';
 import FlatButton from '../shared/buttons';
 import Card from '../shared/card';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Settings({navigation}) {
     const [courseName, setCourseName] = useState('');
-    const [players, setPlayers] = useState([{name:'New Player', key:'0', user:true,
-    hole1:0,hole2:0,hole3:0,hole4:0,hole5:0,hole6:0,hole7:0,hole8:0,hole9:0,hole10:0,hole11:0,hole12:0,hole13:0,hole14:0,hole15:0,hole16:0,hole17:0,hole18:0,}
-    ])
+    const [players, setPlayers] = useState([{name:'New Player', key:'0', user:true,}])
+
+    const saveAllObjects = async (holeData) => {
+        try {
+            let holeJsonValue = JSON.stringify(holeData);
+            let playersJsonValue = JSON.stringify(players);
+            await AsyncStorage.setItem('courseName',courseName);
+            await AsyncStorage.setItem('players', playersJsonValue);
+            await AsyncStorage.setItem('holes', holeJsonValue);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    const resetHoleData = () => {
+        let holeData = [];
+        for(let i = 0; i < 18; i++){
+            let holeDict = {};
+            holeDict['key'] = i;
+            holeDict['holeNumber'] = i+1;
+            holeDict['par'] =  0;
+            for(let j = 0; j< players.length; j++){
+                let playerName = players[j].name;
+                holeDict[playerName] = 0
+            }
+            holeData.push(holeDict);
+        }
+        return holeData;
+    }
+
 
     const addPlayer = () => {
         let nextKey = '0'
@@ -16,8 +44,7 @@ export default function Settings({navigation}) {
             nextKey = (players.length).toString();
         }
         setPlayers([...players,
-            {name:'New Player', key:nextKey, user:false,
-        hole1:0,hole2:0,hole3:0,hole4:0,hole5:0,hole6:0,hole7:0,hole8:0,hole9:0,hole10:0,hole11:0,hole12:0,hole13:0,hole14:0,hole15:0,hole16:0,hole17:0,hole18:0,}
+            {name:'New Player', key:nextKey, user:false,}
         ]);
     }
 
@@ -47,6 +74,13 @@ export default function Settings({navigation}) {
         }
     }
 
+    const startGameHandler = () => {
+        const holeData = resetHoleData()
+        saveAllObjects(holeData);
+        navigation.navigate('Hole 1', {holeNumber:1});
+        
+    }
+
 
 
     return(
@@ -67,7 +101,7 @@ export default function Settings({navigation}) {
                 <FlatButton text='Remove Last Player' onPress={removePlayer} />
                 
                     <FlatList 
-                        style={{flex:1, paddingHorizontal:5}}
+                        style={{flexGrow:1, paddingHorizontal:5}}
                         data={players}
                         renderItem={({item}) => (
                             <Card>
@@ -82,7 +116,7 @@ export default function Settings({navigation}) {
                         )}
                     />
                 
-                <FlatButton text='Start Game' onPress={() => navigation.navigate('Hole 1', {holeNumber:1})} />
+                <FlatButton text='Start Game' onPress={startGameHandler} />
 
 
                 
