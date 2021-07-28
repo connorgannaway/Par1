@@ -1,12 +1,14 @@
 import React, {useState} from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableWithoutFeedback, Keyboard, FlatList } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableWithoutFeedback, Keyboard, FlatList, Alert } from 'react-native';
 import { globalStyles } from '../styles/global';
 import FlatButton from '../shared/buttons';
 import Card from '../shared/card';
 
 export default function Settings({navigation}) {
     const [courseName, setCourseName] = useState('');
-    const [players, setPlayers] = useState([])
+    const [players, setPlayers] = useState([{name:'New Player', key:'0', user:true,
+    hole1:0,hole2:0,hole3:0,hole4:0,hole5:0,hole6:0,hole7:0,hole8:0,hole9:0,hole10:0,hole11:0,hole12:0,hole13:0,hole14:0,hole15:0,hole16:0,hole17:0,hole18:0,}
+    ])
 
     const addPlayer = () => {
         let nextKey = '0'
@@ -14,22 +16,35 @@ export default function Settings({navigation}) {
             nextKey = (players.length).toString();
         }
         setPlayers([...players,
-            {name:'New Player', key:nextKey,
+            {name:'New Player', key:nextKey, user:false,
         hole1:0,hole2:0,hole3:0,hole4:0,hole5:0,hole6:0,hole7:0,hole8:0,hole9:0,hole10:0,hole11:0,hole12:0,hole13:0,hole14:0,hole15:0,hole16:0,hole17:0,hole18:0,}
         ]);
-        console.log(nextKey)
     }
 
     const removePlayer = () => {
-        let newPlayers = [...players];
-        newPlayers.pop();
-        setPlayers(newPlayers);
+        if(players.length > 1){
+            let newPlayers = [...players];
+            newPlayers.pop();
+            setPlayers(newPlayers);
+        } else {
+            Alert.alert("Can't delete self", 'Game must have at least one player', [
+                {text: 'Got it'}
+            ])
+        }
     }
 
     const updatePlayerName = (text, player) => {
         let newPlayers = [...players];
         newPlayers[player.key].name = text;
         setPlayers(newPlayers)
+    }
+
+    const checkIsUserText = (player) => {
+        if(player.user == true){
+            return '* This is you'
+        } else {
+            return ''
+        }
     }
 
 
@@ -56,6 +71,7 @@ export default function Settings({navigation}) {
                         data={players}
                         renderItem={({item}) => (
                             <Card>
+                                <Text>{checkIsUserText(item)}</Text>
                                 <TextInput 
                                     style={styles.textInput}
                                     placeholder='Player Name'
