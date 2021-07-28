@@ -1,6 +1,5 @@
 TODO in descending order
 
-- Incorporate async storage to settings
 - link settings and game by through async storage
 - migrate settings to a modal or different screen
 - add finishing score view.

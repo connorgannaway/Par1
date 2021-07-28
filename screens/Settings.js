@@ -37,7 +37,6 @@ export default function Settings({navigation}) {
         return holeData;
     }
 
-
     const addPlayer = () => {
         let nextKey = '0'
         if(players.length != 0){
@@ -55,7 +54,7 @@ export default function Settings({navigation}) {
             setPlayers(newPlayers);
         } else {
             Alert.alert("Can't delete self", 'Game must have at least one player', [
-                {text: 'Got it'}
+                {text: 'Got It'}
             ])
         }
     }
@@ -74,10 +73,28 @@ export default function Settings({navigation}) {
         }
     }
 
+    const checkNames = () => {
+        console.log('checknames')
+        let pass = true;
+        for(let i = 0; i < players.length; i++){
+            if(players[i].name.length === 0){
+                pass = false
+                console.log('iteration ')
+            }
+        }
+        if(pass == false){
+            Alert.alert("Name Length", "Names can't be blank", [{text: 'Got It'}])
+        }
+        return pass;
+    }
+
     const startGameHandler = () => {
-        const holeData = resetHoleData()
-        saveAllObjects(holeData);
-        navigation.navigate('Hole 1', {holeNumber:1});
+        const passNameCheck = checkNames();
+        if(passNameCheck == true){
+            const holeData = resetHoleData();
+            saveAllObjects(holeData);
+            navigation.navigate('Hole 1', {holeNumber:1});
+        } 
         
     }
 
