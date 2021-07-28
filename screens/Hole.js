@@ -47,13 +47,38 @@ export default function Hole({route, navigation}) {
     const getScoreStyle = (player) => {
         if(player.strokes - par <= 0){
             return {
-                color: '#01AB16'
+                color: '#01AB16',
+                marginLeft: 10
             }
         } else {
             return {
-                color: '#ff0000'
+                color: '#ff0000',
+                marginLeft: 10
             }
         }
+    }
+
+    const getScoreKeyword = (player) => {
+        let score = player.strokes - par;
+        let word = '';
+        if (score == '-3'){
+            word = 'Double Eagle'
+        } else if (score == '-2'){
+            word = 'Eagle'
+        } else if (score == '-1'){
+            word = 'Birdie'
+        } else if (score == '0'){
+            word = 'Par'
+        } else if (score == '1'){
+            word = 'Bogey'
+        } else if (score == '2'){
+            word = 'Double Bogey'
+        } else if (score == '3'){
+            word = 'Triple Bogey'
+        } 
+
+        return (word == '') ? '' : word;
+        
     }
     
 
@@ -72,11 +97,11 @@ export default function Hole({route, navigation}) {
                     renderItem={({item}) => (
                         <Card>
                             <View style={styles.playerContainer}>
-                                <Text style={getScoreStyle(item)}>{item.strokes - par}</Text>
                                 <Text style={styles.playerContainerItem}>{item.name}</Text>
                                 <Feather name='minus-circle' size={32} style={styles.playerContainerItem} onPress={() => updateStrokes(item.key, 'negative')} />
                                 <Text style={styles.playerContainerItem}>{item.strokes}</Text>
                                 <Feather name='plus-circle' size={32} style={styles.playerContainerItem} onPress={() => updateStrokes(item.key, 'positive')} />
+                                <Text style={getScoreStyle(item)}>{getScoreKeyword(item)}</Text>
                             </View>
                         </Card>
                     )}
@@ -109,7 +134,9 @@ const styles = StyleSheet.create({
         
     },
     playerContainerItem: {
-        padding:10
+        padding:10,
+        
+        
         
     }
 });

@@ -1,0 +1,33 @@
+TODO in descending order
+
+- Incorporate async storage to settings
+- link settings and game by through async storage
+- migrate settings to a modal or different screen
+- add finishing score view.
+
+- add database for long term storage
+- add course lookup to settings 
+- add history screen
+- add trends screen
+
+
+
+
+notes for amadeus:
+- I like our idea of easy to use interface, however i feel sometimes
+  i'm not seeing what i want to without navigating multiple pages. Maybe incorporate a way
+  to switch to a grid mode as a way to input or just as an overview.
+- I'm torn between our idea of steppers and the other app's idea of choosing a score
+  from a popup. Less clicks to input.
+- I do think a homepage would be good. Starting on a blank game without inputing settings
+  or on the settings screen could be overwhelming or confusing in regards to navigating
+  the app.
+- I think distinction between front nine and back nine can be good.
+
+ideal total feature list:
+- score tracking for unlimited number of players
+- history of courses/choose course in settings for prefilled pars
+- easy to input scores and pars
+- game overview
+- history of past games and scores. view all or sorted by course
+- trends. view all or sorted by course
