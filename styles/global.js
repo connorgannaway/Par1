@@ -32,5 +32,24 @@ export const globalStyles = StyleSheet.create({
         marginBottom: 10,
         marginTop: 6,
         textAlign: "center"
-    }
+    },
+    yellowgreen:{
+        color: '#85cb33'
+    },
+    darkgreen:{
+        color: '#14281d'
+    },
+    nyanza:{
+        color: '#efffc8'
+    },
+    opal:{
+        color: '#a5cbc3'
+    },
+    huntergreen:{
+        color: '#355834'
+    },
+    steelteal:{
+        color: '#42858c'
+    },
+
 })

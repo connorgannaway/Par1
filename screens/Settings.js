@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableWithoutFeedback, Keyboard, FlatList, Alert } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableWithoutFeedback, Keyboard, FlatList, Alert, TouchableOpacity } from 'react-native';
 import { globalStyles } from '../styles/global';
 import FlatButton from '../shared/buttons';
 import Card from '../shared/card';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function Settings({navigation}) {
+export default function Settings(props) {
     const [courseName, setCourseName] = useState('');
-    const [players, setPlayers] = useState([{name:'New Player', key:'0', user:true,}])
+    const [players, setPlayers] = useState([{name:'', key:'0', user:true,}])
 
     const saveAllObjects = async (holeData) => {
         try {
@@ -43,7 +44,7 @@ export default function Settings({navigation}) {
             nextKey = (players.length).toString();
         }
         setPlayers([...players,
-            {name:'New Player', key:nextKey, user:false,}
+            {name:'', key:nextKey, user:false,}
         ]);
     }
 
@@ -74,12 +75,10 @@ export default function Settings({navigation}) {
     }
 
     const checkNames = () => {
-        console.log('checknames')
         let pass = true;
         for(let i = 0; i < players.length; i++){
             if(players[i].name.length === 0){
                 pass = false
-                console.log('iteration ')
             }
         }
         if(pass == false){
@@ -88,23 +87,38 @@ export default function Settings({navigation}) {
         return pass;
     }
 
+    const clearGameAlert = () => {
+        let clearGame = false;
+        Alert.alert('Clear Current Game', 'Proceeding will clear the current scorecard. Go back and save the game if you wish to.',[
+            {text:'Go Back'},
+            {text:'Continue', onPress: startGame}
+        ])
+    }
+
     const startGameHandler = () => {
-        const passNameCheck = checkNames();
+        let passNameCheck = checkNames();
         if(passNameCheck == true){
-            const holeData = resetHoleData();
-            saveAllObjects(holeData);
-            navigation.navigate('Hole 1', {holeNumber:1});
+            clearGameAlert()
         } 
         
+    }
+    const startGame = () => {
+        const holeData = resetHoleData();
+        saveAllObjects(holeData);
+        props.navMethod()
     }
 
 
 
     return(
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <View style={[globalStyles.container, {marginVertical:10, justifyContent: 'center'}]}>
-            
-                <Text style={globalStyles.titleText}>Course Name</Text>
+            <View style={[globalStyles.container, {marginVertical:10, marginTop:30, justifyContent: 'center'}]}>
+                <View style={{flexDirection: 'row', alignItems:'center'}}>
+                    <Text style={globalStyles.titleText}>Course Name</Text>
+                    <TouchableOpacity onPress={props.closeModal} style={{marginLeft:180}}>
+                        <Ionicons name='close' size={24} />
+                    </TouchableOpacity>
+                </View>
                 <Text style={globalStyles.subHeader}>Or Select From Previous Courses... (selector not developed)</Text>
                 <TextInput 
                     style={styles.textInput}
@@ -113,10 +127,10 @@ export default function Settings({navigation}) {
                 />
 
                 <Text style={globalStyles.titleText}>Players</Text>
-                
-                <FlatButton text='Add Player' onPress={addPlayer} />
-                <FlatButton text='Remove Last Player' onPress={removePlayer} />
-                
+                <View style={{flexDirection:'row', justifyContent:'space-evenly'}}>
+                    <FlatButton text='Add Player' onPress={addPlayer} />
+                    <FlatButton text='Remove Last Player' onPress={removePlayer} />
+                </View>
                     <FlatList 
                         style={{flexGrow:1, paddingHorizontal:5}}
                         data={players}

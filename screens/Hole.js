@@ -5,9 +5,8 @@ import Card from '../shared/card';
 import {Feather} from '@expo/vector-icons'
 
 
-export default function Hole({route, navigation}) {
+export default function Hole() {
 
-    const holeNumber = route.params.holeNumber
     const [par, setPar] = useState(0)
     const [players, setPlayers] = useState([
         {name:'Henry', strokes:0, key:'0'},
@@ -21,6 +20,10 @@ export default function Hole({route, navigation}) {
         {name:'Sarah', strokes:0, key:'8'},
         {name:'Sarah', strokes:0, key:'9'},
     ])
+
+    componentDidMount = () => {
+        console.log('Component Mounted')
+    }
 
     const updatePar = (direction) => {
         if(direction == 'positive'){

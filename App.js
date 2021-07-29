@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
-import HoleStack from './routes/HoleStack'
+import BottomTabs from './routes/BottomTabs';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
+import { NavigationContainer } from '@react-navigation/native';
 
 const getFonts = () => Font.loadAsync({
   'nunito-regular': require('./assets/fonts/Nunito-Regular.ttf'),
@@ -16,7 +17,9 @@ export default function App() {
 
   if(fontsLoaded){
     return(
-      <HoleStack />
+      <NavigationContainer>
+        <BottomTabs />
+      </NavigationContainer>
     );
   } else {
     return(
