@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Hole({navigation, route}) {
 
-    //const [par, setPar] = useState(0)
+    const [par, setPar] = useState(0)
     const [holeData, setHoleData] = useState([])
     const [players, setPlayers] = useState([
         {name:'Henry', strokes:0, key:'0'},

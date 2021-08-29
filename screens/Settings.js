@@ -12,11 +12,17 @@ export default function Settings(props) {
 
     const saveAllObjects = async (holeData) => {
         try {
-            let holeJsonValue = JSON.stringify(holeData);
+            //let holeJsonValue = JSON.stringify(holeData);
             let playersJsonValue = JSON.stringify(players);
             await AsyncStorage.setItem('courseName',courseName);
             await AsyncStorage.setItem('players', playersJsonValue);
-            await AsyncStorage.setItem('holes', holeJsonValue);
+            //await AsyncStorage.setItem('holes', holeJsonValue);
+            for(let i = 18; i > 0; i--){
+                let currentHole = holeData.pop();
+                let keyname = 'hole'+i.toString();
+                let json = JSON.stringify(currentHole);
+                await AsyncStorage.setItem(keyname,json)
+            }
         } catch (e) {
             console.error(e);
         }
@@ -26,7 +32,6 @@ export default function Settings(props) {
         let holeData = [];
         for(let i = 0; i < 18; i++){
             let holeDict = {};
-            holeDict['key'] = i;
             holeDict['holeNumber'] = i+1;
             holeDict['par'] =  0;
             for(let j = 0; j< players.length; j++){
@@ -36,6 +41,12 @@ export default function Settings(props) {
             holeData.push(holeDict);
         }
         return holeData;
+    }
+
+    const buildHoleData = () => {
+        let holeData = {};
+        
+
     }
 
     const addPlayer = () => {
@@ -103,8 +114,11 @@ export default function Settings(props) {
         
     }
     const startGame = () => {
+        //buildHoleData();
+        
         const holeData = resetHoleData();
         saveAllObjects(holeData);
+        console.log(holeData)
         props.navMethod()
     }
 
